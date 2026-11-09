@@ -17,6 +17,8 @@ options.add_cmake_defines({
     'CMAKE_OSX_SYSROOT': meson.get_cross_property('cmake_osx_sysroot'),
     'CMAKE_BUILD_TYPE': 'Release',
     'BUILD_STATIC': false,
+    # The CLI tool is not needed, and its install rule fails for iOS targets.
+    'BUILD_BINARY': false,
 })
 
 uchardet = cmake.subproject('uchardet',
