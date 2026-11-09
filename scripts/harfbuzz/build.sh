@@ -26,5 +26,7 @@ meson setup build \
     -Dexperimental_api=false \
     -Dragel_subproject=false \
     -Dfuzzer_ldflags=
+# The iOS SDK links sincosf but does not declare it.
+sed -i '' '/HAVE_SINCOSF/d' build/config.h
 meson compile -C build
 meson install -C build

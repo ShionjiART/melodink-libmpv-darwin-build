@@ -22,6 +22,10 @@ cp -R subprojects/mbedtls/include/mbedtls/*.h dist/include/mbedtls
 cp -R subprojects/mbedtls/include/psa/*.h dist/include/psa
 ## install libs
 find . -type f -name '*.dylib' -exec sh -c 'mv {} dist/lib' \;
+## newer CMake only builds versioned dylibs; add the unversioned names for -l
+for lib in mbedtls mbedx509 mbedcrypto; do
+    (cd dist/lib && ln -sf "$(ls lib${lib}.*.dylib | head -1)" lib${lib}.dylib)
+done
 ## install pkgconfig file
 cp ${PROJECT_DIR}/scripts/mbedtls/mbedtls.pc.in dist/lib/pkgconfig/mbedtls.pc
 sed -i '' 's|${PREFIX}|'${OUTPUT_DIR}'|g' dist/lib/pkgconfig/mbedtls.pc

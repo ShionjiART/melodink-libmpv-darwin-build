@@ -23,6 +23,9 @@ mv ./3rdparty/markupsafe-2.1.2 ./3rdparty/markupsafe
 tar -xzvf "${DOWNLOADS_DIR}/Vulkan-Headers-1.3.243.tar.gz" -C ./3rdparty/
 mv ./3rdparty/Vulkan-Headers-1.3.243 ./3rdparty/Vulkan-Headers
 
+# Python 3.15 no longer accepts an ElementTree where an Element is expected.
+sed -i '' 's/VkXML(ET.parse(xmlfile))/VkXML(ET.parse(xmlfile).getroot())/' src/vulkan/utils_gen.py
+
 meson setup build \
     --cross-file ${PROJECT_DIR}/cross-files/${OS}-${ARCH}.ini \
     --prefix="${OUTPUT_DIR}" \

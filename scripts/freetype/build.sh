@@ -14,5 +14,10 @@ meson setup build \
     -Dpng=enabled \
     -Dtests=disabled \
     -Dzlib=enabled
+# libpng 1.6.40 includes the classic Mac OS <fp.h> whenever TARGET_OS_MAC is
+# defined, which current Apple SDKs do. Fixed upstream in libpng 1.6.41.
+for f in subprojects/libpng-*/pngpriv.h; do
+    if [ -f "$f" ]; then sed -i '' 's/ || defined(TARGET_OS_MAC)//' "$f"; fi
+done
 meson compile -C build
 meson install -C build
